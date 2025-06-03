@@ -95,20 +95,35 @@
       let firstNum = document.querySelector('#first-num').value;
       let secondNum = document.querySelector('#second-num').value;
       let operator = document.querySelector('#operator').value;
-      output.innerHTML = eval(`${firstNum} ${operator} ${secondNum}`);
+
+      // experimenting with try/catch/finally/throw
+      try {
+        if (isNaN(firstNum)) {
+          throw new Error('First input box must be a number');
+        }
+        if (isNaN(secondNum)) {
+          throw new Error('Second input box must be a number');
+        }
+        output.innerHTML = eval(`${firstNum} ${operator} ${secondNum}`);
+      } catch (err) {
+        alert('Error occurred during calculation');
+        console.error(err.message);
+      } finally {
+        console.log('Calculation attempted');
+      }
     });
 
     let errorBtns = Array.from(document.querySelectorAll('#error-btns > button'));
 
     // Start your code here
     const consoleButtons = {
-      'Console Log': () => console.log(`Console Log Demo`),
-      'Console Error': () => console.error(`Console Error Demo`),
-      'Console Count': () => console.count(`Count Button`),
-      'Console Warn': () => console.warn(`Console Warn Button`),
+      'Console Log': () => console.log('Console Log Demo'),
+      'Console Error': () => console.error('Console Error Demo'),
+      'Console Count': () => console.count('Count Button'),
+      'Console Warn': () => console.warn('Console Warn Button'),
       'Console Assert': () => {
         const num = 2;
-        console.assert(num === 3, {num, errorMsg: `The number does not equal 3`});
+        console.assert(num === 3, {num, errorMsg: 'The number does not equal 3'});
       },
       'Console Clear': () => console.clear(),
       'Console Dir': (e) => {
@@ -124,8 +139,8 @@
         {name:'Programming Languages', num: 130},
         {name:'Advanced Software Engineering', num: 112}
       ]),
-      'Start Timer': () => console.time(`Timer Button`),
-      'End Timer': () => console.timeEnd(`Timer Button`),
+      'Start Timer': () => console.time('Timer Button'),
+      'End Timer': () => console.timeEnd('Timer Button'),
       'Console Trace': () => console.trace()
     };
 
