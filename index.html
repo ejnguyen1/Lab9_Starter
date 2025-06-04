@@ -87,7 +87,23 @@
     </section>
   </main>
 
+  <script src="https://cdn.trackjs.com/agent/v3/latest/t.js"></script>
   <script>
+    window.TrackJS && TrackJS.install({ 
+      token: "cf23d7c0542742d0bc7e3110821f6d74"
+      // for more configuration options, see https://docs.trackjs.com
+    });
+  </script>
+
+  <script>
+    // Step 4
+    class CalculationError extends Error {
+      constructor(message) {
+        super(message);
+        this.name = 'CalculationError';
+      }
+    }
+
     let form = document.querySelector('form');
     form.addEventListener('submit', e => {
       e.preventDefault();
@@ -99,19 +115,23 @@
       // experimenting with try/catch/finally/throw
       try {
         if (isNaN(firstNum)) {
-          throw new Error('First input box must be a number');
+          throw new CalculationError('First input box must be a number');
         }
         if (isNaN(secondNum)) {
-          throw new Error('Second input box must be a number');
+          throw new CalculationError('Second input box must be a number');
         }
         output.innerHTML = eval(`${firstNum} ${operator} ${secondNum}`);
       } catch (err) {
         alert('Error occurred during calculation');
-        console.error(err.message);
+        console.error(`${err.name}: ${err.message}`);
       } finally {
         console.log('Calculation attempted');
       }
     });
+
+    window.onerror = function (msg) {
+      console.log('Global error caught:', msg);
+    };
 
     let errorBtns = Array.from(document.querySelectorAll('#error-btns > button'));
 
@@ -141,7 +161,8 @@
       ]),
       'Start Timer': () => console.time('Timer Button'),
       'End Timer': () => console.timeEnd('Timer Button'),
-      'Console Trace': () => console.trace()
+      'Console Trace': () => console.trace(),
+      'Trigger a Global Error': () => undefinedFunction()
     };
 
     document.querySelectorAll('#error-btns > button').forEach(b => {
